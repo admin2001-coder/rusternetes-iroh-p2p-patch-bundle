@@ -1,0 +1,40 @@
+diff --git a/Cargo.toml b/Cargo.toml
+index 1f38a0a..38f8d10 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -20,6 +20,7 @@ members = [
+     "crates/rusternetes-client",
+     "crates/rusternetes-common",
+     "crates/rusternetes-controller",
++    "crates/iroh-overlay",
+ ]
+ 
+ [workspace.dependencies]
+@@ -40,6 +41,8 @@ tokio = { version = "1", features = ["full"] }
+ tracing = "0.1"
+ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+ 
++iroh = "0.26"
++
+ diff --git a/crates/rusternetes-controller/src/main.rs b/crates/rusternetes-controller/src/main.rs
+index 04f7b87..4b5f6de 100644
+--- a/crates/rusternetes-controller/src/main.rs
++++ b/crates/rusternetes-controller/src/main.rs
+@@ -8,6 +8,7 @@ use rusternetes_common::{
+     controller::{Controller, ControllerBuilder},
+     rusternetes_client::Client,
+ };
++use iroh_overlay::Overlay;
+ 
+ #[tokio::main]
+ async fn main() {
+@@ -18,6 +19,12 @@ async fn main() {
+     let client = Client::try_default().await.unwrap();
+     let controller = ControllerBuilder::new(client).build();
++
++    // Start experimental Iroh-based overlay networking
++    let overlay = Overlay::new().await;
++    overlay.run().await;
+ 
+     controller.run().await;
+ }
