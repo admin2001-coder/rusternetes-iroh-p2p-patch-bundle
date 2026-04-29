@@ -1,12 +1,29 @@
 [package]
-name = "iroh-overlay"
-version = "0.1.0"
-edition = "2021"
+name = "rusternetes-iroh-overlay"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[features]
+default = []
+sqlite = ["rusternetes-storage/sqlite"]
 
 [dependencies]
-anyhow = "1"
-clap = { version = "4", features = ["derive"] }
-iroh = "0.26"
-tokio = { version = "1", features = ["full"] }
-tracing = "0.1"
+anyhow.workspace = true
+base64.workspace = true
+clap.workspace = true
+futures.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+rusternetes-storage = { path = "../storage" }
+rusternetes-common = { path = "../common" }
+iroh = "0.98"
 
+[[bin]]
+name = "rusternetes-iroh-overlay"
+path = "src/main.rs"
